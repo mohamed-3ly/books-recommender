@@ -22,7 +22,7 @@ class BooksController extends Controller
         return new JsonResponse(['message' => 'thanks']);
     }
 
-    public function TopReadBooks()
+    public function TopReadBooks(): JsonResponse
     {
         $books =  $this->bookService->topReadBooks();
         return new JsonResponse(['data' => BooksResource::collection($books)]);
