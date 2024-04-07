@@ -23,5 +23,6 @@ class UpdateBookReadListener implements ShouldQueue
             }
         }
         $event->book->update(['read' => count($uniqueValues)]);
+        cache()->forget('most-read-5-books');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services\Books;
 
 
+use AllowDynamicProperties;
 use App\DataTransferObjects\Books\CreateReadLogDTO;
 use App\Events\UserReadBookEvent;
 use App\Models\Book;
@@ -11,13 +12,14 @@ use App\Rules\LessThanOrEqualBookPages;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Validator;
 
-class BookService extends BaseService
+#[AllowDynamicProperties] class BookService extends BaseService
 {
     public function __construct(
         protected Book              $book,
         protected BooksUsersReadLog $booksUsersReadLog,
     )
     {
+        $this->seconds = 60 * 60 * 24;
     }
 
     public function getModel(): Book
@@ -32,6 +34,13 @@ class BookService extends BaseService
         if ($model->wasRecentlyCreated === true) {
             event(new UserReadBookEvent($model->book));
         }
+    }
+
+    public function TopReadBooks()
+    {
+        return cache()->remember('most-read-5-books', $this->seconds, function () {
+            return $this->getQuery()->orderByDesc('read')->take(5)->get();
+        });
     }
 
     private function validateBeforeAddBookReadLog(CreateReadLogDTO $createReadLogDTO): void
