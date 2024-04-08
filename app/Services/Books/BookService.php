@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Validator;
         $this->validateBeforeAddBookReadLog($createReadLogDTO);
         $model = $this->booksUsersReadLog->query()->firstOrCreate($createReadLogDTO->toArray());
         if ($model->wasRecentlyCreated === true) {
-            event(new UserReadBookEvent($model->book));
+            event(new UserReadBookEvent($model->book, $model->user));
         }
     }
 

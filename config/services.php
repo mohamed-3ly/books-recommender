@@ -31,4 +31,5 @@ return [
         ],
     ],
 
+    'sms' => env('SMS_SERVICE')
 ];

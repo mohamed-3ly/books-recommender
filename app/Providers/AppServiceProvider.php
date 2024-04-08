@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Events\UserReadBookEvent;
-use App\Listeners\UpdateBookReadListener;
-use Illuminate\Support\Facades\Event;
+use App\Services\Contracts\SMSServiceContract;
+use App\Services\SMS\Dreivers\SMSEgyptService;
+use App\Services\SMS\Dreivers\TwilioService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(SMSServiceContract::class, function ($app) {
+            if (config('services.sms') == 'twiilio') {
+                return new TwilioService();
+            } elseif (config('services.sms') == 'smsEgypt') {
+                return new SMSEgyptService();
+            } else {
+                throw new \Exception('not implemented');
+            }
+        });
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Events;
 
 use AllowDynamicProperties;
 use App\Models\Book;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -20,7 +21,7 @@ class UserReadBookEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(public Book|Model $book)
+    public function __construct(public Book|Model $book, public User|Model $user)
     {
     }
 

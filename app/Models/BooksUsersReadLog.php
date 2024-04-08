@@ -17,4 +17,9 @@ class BooksUsersReadLog extends Pivot
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
